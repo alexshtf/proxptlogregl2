@@ -1,7 +1,5 @@
 import math
 
-import torch
-
 
 # 0.5 * t^2
 class SquaredSPPLoss:

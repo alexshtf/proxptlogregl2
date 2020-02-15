@@ -2,8 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import torch
-from sklearn import preprocessing
 
 import adagrad_experiment
 import dataset
@@ -16,7 +14,7 @@ pd.set_option('display.width', 1000)
 ds, dim = dataset.adult_income()
 
 # setup experiment parameters
-epochs = range(0, 50)
+epochs = range(0, 20)
 attempts = range(0, 20)
 lrs = np.geomspace(0.001, 10, num=30)
 
