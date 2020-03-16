@@ -19,14 +19,14 @@ def run(dim, ds, epochs, attempts, lrs, reg_coef):
                 for epoch in epochs:
                     train_loss = 0
                     for X, y in DataLoader(ds, shuffle=True, batch_size=1):
-                        XX = X.squeeze(0)
-                        if y.item() == 0:
-                            a = -XX
-                        else:
-                            a = XX
+                        opt.zero_grad()
 
-                        score = torch.dot(a, x)
-                        loss = torch.log1p(torch.exp(score)) + (reg_coef / 2) * x.pow(2).sum()
+                        if y.item() == 0:
+                            score = -torch.dot(X[0, :], x)
+                        else:
+                            score = torch.dot(X[0, :], x)
+
+                        loss = torch.log1p(torch.exp(score)) + (reg_coef / 2) * torch.dot(x, x)
                         loss.backward()
 
                         train_loss += loss.item()
