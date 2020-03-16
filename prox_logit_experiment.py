@@ -4,10 +4,10 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from convex_losses import LogisticSPPLoss
-from convex_on_linear_spp import ConvexOnLinearSPP
+from convex_on_linear_spp import ConvexOnLinearL2RegSPP
 
 
-def run(dim, ds, epochs, attempts, lrs):
+def run(dim, ds, epochs, attempts, lrs, reg_coef):
     losses = pd.DataFrame(columns=['lr', 'epoch', 'attempt', 'loss'])
     total_epochs = len(lrs) * len(attempts) * len(epochs)
     with tqdm(total=total_epochs, desc='lr = NA, attempt = NA, epoch = NA, loss = NA', unit='epochs',
@@ -16,7 +16,7 @@ def run(dim, ds, epochs, attempts, lrs):
             for attempt in attempts:
                 x = torch.empty(dim, requires_grad=False, dtype=torch.double)
                 torch.nn.init.normal_(x)
-                opt = ConvexOnLinearSPP(x, lr, LogisticSPPLoss())
+                opt = ConvexOnLinearL2RegSPP(x, lr, LogisticSPPLoss(), reg_coef)
 
                 for epoch in epochs:
                     train_loss = 0

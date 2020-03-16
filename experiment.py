@@ -17,11 +17,12 @@ ds, dim = dataset.adult_income()
 epochs = range(0, 20)
 attempts = range(0, 20)
 lrs = np.geomspace(0.001, 10, num=30)
+reg_coef = 1
 
-losses = adagrad_experiment.run(dim, ds, epochs, attempts, lrs)
+losses = adagrad_experiment.run(dim, ds, epochs, attempts, lrs, reg_coef)
 losses.to_csv('adagrad.csv')
 
-losses = prox_logit_experiment.run(dim.shape[1], ds, epochs, attempts, lrs)
+losses = prox_logit_experiment.run(dim.shape[1], ds, epochs, attempts, lrs, reg_coef)
 losses.to_csv('prox_logit.csv')
 
 # we save results to CSV files, so that we can later visualize them

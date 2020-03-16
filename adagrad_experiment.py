@@ -5,7 +5,7 @@ from tqdm import tqdm
 from torch.optim import Adagrad
 
 
-def run(dim, ds, epochs, attempts, lrs):
+def run(dim, ds, epochs, attempts, lrs, reg_coef):
     losses = pd.DataFrame(columns=['lr', 'epoch', 'attempt', 'loss'])
     total_epochs = len(lrs) * len(attempts) * len(epochs)
     with tqdm(total=total_epochs, desc='lr = NA, attempt = NA, epoch = NA, loss = NA', unit='epochs',
@@ -26,7 +26,7 @@ def run(dim, ds, epochs, attempts, lrs):
                             a = XX
 
                         score = torch.dot(a, x)
-                        loss = torch.log1p(torch.exp(score))
+                        loss = torch.log1p(torch.exp(score)) + (reg_coef / 2) * x.pow(2).sum()
                         loss.backward()
 
                         train_loss += loss.item()
