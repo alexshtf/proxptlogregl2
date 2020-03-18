@@ -17,18 +17,22 @@ class ConvexOnLinearL2RegSPP:
         phi = self._phi  # (*)
         x = self._x
 
+        dot = torch.dot(a, x)
+        val = phi.eval(dot.item()) + (reg_coef / 2) * (x.pow(2).sum().item())
+
         # compute the dual problem's coefficients
         alpha = eta * torch.sum(a ** 2) / (1 + eta * reg_coef)
-        beta = torch.dot(a, x) / (1 + eta * reg_coef) + b
+        beta = dot / (1 + eta * reg_coef) + b
 
         # solve the dual problem
         s_star = phi.solve_dual(alpha.item(), beta.item())
 
         # update x
         x.sub_(eta * s_star * a)
+        x.div_(1 + eta * reg_coef)
 
         # compute regularized loss0]
-        return phi.eval(torch.dot(a, x).item()) + (reg_coef / 2) * (x.pow(2).sum().item())
+        return val
 
     def x(self):
         return self._x

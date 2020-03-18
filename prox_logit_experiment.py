@@ -16,7 +16,7 @@ def run(dim, ds, epochs, attempts, lrs, reg_coef):
             for attempt in attempts:
                 x = torch.empty(dim, requires_grad=False, dtype=torch.double)
                 torch.nn.init.normal_(x)
-                opt = ConvexOnLinearL2RegSPP(x, lr, LogisticSPPLoss(), reg_coef)
+                opt = ConvexOnLinearL2RegSPP(x, lr, reg_coef, LogisticSPPLoss())
 
                 for epoch in epochs:
                     train_loss = 0
