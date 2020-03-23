@@ -18,7 +18,7 @@ class ConvexOnLinearL2RegSPP:
         x = self._x
 
         dot = torch.dot(a, x)
-        val = phi.eval(dot.item()) + (reg_coef / 2) * (x.pow(2).sum().item())
+        val = phi.eval(dot.item() + b) + (reg_coef / 2) * (x.pow(2).sum().item())
 
         # compute the dual problem's coefficients
         alpha = eta * torch.sum(a ** 2) / (1 + eta * reg_coef)
